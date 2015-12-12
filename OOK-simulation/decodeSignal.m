@@ -1,6 +1,8 @@
 function [symbols] = decodeSignal(file)
     data = real(abs(read_complex_binary(file)));
     chunk = data(1.35e5:3.3e5);
+    % takes the portion of the signal following
+    % the initial handshake
     N = length(chunk);
     ndata = NaN(1, N);
     cutoff = max(chunk)/2;
@@ -21,6 +23,7 @@ function [symbols] = decodeSignal(file)
     x = 1;
     y = 1;
 
+    % gets the rise and fall indexes within the chunk array
     for n = 1:N-1
         if ndata(n) == 0 && ndata(n+1) == 1
             rise(x) = n;
